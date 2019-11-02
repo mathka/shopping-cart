@@ -6,5 +6,5 @@ namespace ShoppingCart\Domain\Model;
 
 interface ShoppingCart
 {
-    public function addProduct(Product $product, $quantity);
+    public function addItem(Product $product, $quantity): void;
 }
