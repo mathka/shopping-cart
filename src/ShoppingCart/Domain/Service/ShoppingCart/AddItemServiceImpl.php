@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ShoppingCart\Domain\Service;
+namespace ShoppingCart\Domain\Service\ShoppingCart;
 
 use ShoppingCart\Domain\Model\Product;
 use ShoppingCart\Domain\Model\ShoppingCart;
 
-class ShoppingCartServiceImpl implements ShoppingCartService
+class AddItemServiceImpl implements AddItemService
 {
     /**
      * @var ShoppingCart
@@ -19,8 +19,8 @@ class ShoppingCartServiceImpl implements ShoppingCartService
         $this->shoppingCart = $shoppingCart;
     }
 
-    public function addProduct(Product $product, int $quantity)
+    public function add(Product $product, int $quantity): void
     {
-        $this->shoppingCart->addProduct($product, $quantity);
+        $this->shoppingCart->addItem($product, $quantity);
     }
 }
