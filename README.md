@@ -12,7 +12,7 @@ Object-based shopping cart mechanism (model) based on tests (TDD). It contains e
 - products have a defined minimum quantity that can be ordered; by default, it should be 1 for each product; if the user selects a smaller amount, an error (exception) will be returned,
 - this is a variant / proposal to implement the business model, it does not operate on any database
 
-##Use cases / acceptance criteria:
+## Use cases / acceptance criteria:
 
 1. Adding the product to the shopping cart
     - the minimum required quantity of items for a given product has been added - success
