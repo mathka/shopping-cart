@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ShoppingCart\Domain\Service\ShoppingCart;
 
+use ShoppingCart\Domain\Exception\ShoppingCartException;
 use ShoppingCart\Domain\Model\Product;
 use ShoppingCart\Domain\Model\ShoppingCart;
 
@@ -21,6 +22,10 @@ class AddItemServiceImpl implements AddItemService
 
     public function add(Product $product, int $quantity): void
     {
+        if ($product->hasLargerMinimumOrderQuantity($quantity)) {
+            throw ShoppingCartException::lessThanMinimumOrderQuantity();
+        }
+
         $this->shoppingCart->addItem($product, $quantity);
     }
 }
