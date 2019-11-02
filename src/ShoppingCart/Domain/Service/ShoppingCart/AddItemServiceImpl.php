@@ -6,18 +6,18 @@ namespace ShoppingCart\Domain\Service\ShoppingCart;
 
 use ShoppingCart\Domain\Exception\ShoppingCartException;
 use ShoppingCart\Domain\Model\Product;
-use ShoppingCart\Domain\Model\ShoppingCart;
+use ShoppingCart\Domain\Repository\ShoppingCartRepository;
 
 class AddItemServiceImpl implements AddItemService
 {
     /**
-     * @var ShoppingCart
+     * @var ShoppingCartRepository
      */
-    private $shoppingCart;
+    private $shoppingCartRepository;
 
-    public function __construct(ShoppingCart $shoppingCart)
+    public function __construct(ShoppingCartRepository $shoppingCartRepository)
     {
-        $this->shoppingCart = $shoppingCart;
+        $this->shoppingCartRepository = $shoppingCartRepository;
     }
 
     public function add(Product $product, int $quantity): void
@@ -26,6 +26,7 @@ class AddItemServiceImpl implements AddItemService
             throw ShoppingCartException::lessThanMinimumOrderQuantity();
         }
 
-        $this->shoppingCart->addItem($product, $quantity);
+        $shoppingCart = $this->shoppingCartRepository->getShoppingCart();
+        $shoppingCart->addItem($product, $quantity);
     }
 }
