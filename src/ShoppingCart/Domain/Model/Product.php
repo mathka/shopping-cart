@@ -6,4 +6,5 @@ namespace ShoppingCart\Domain\Model;
 
 interface Product
 {
+    public function hasLargerMinimumOrderQuantity(int $quantity): int;
 }
