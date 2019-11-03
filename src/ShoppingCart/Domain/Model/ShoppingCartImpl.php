@@ -22,4 +22,9 @@ class ShoppingCartImpl implements ShoppingCart
             new ShoppingCartItem($product, $quantity)
         );
     }
+
+    public function removeItem(Product $product): void
+    {
+        // TODO: Implement removeItem() method.
+    }
 }
