@@ -7,17 +7,19 @@ namespace ShoppingCart\Domain\Model;
 class ShoppingCartImpl implements ShoppingCart
 {
     /**
-     * @var ItemList
+     * @var ShoppingCartItemList
      */
     private $itemList;
 
-    public function __construct(ItemList $itemList)
+    public function __construct(ShoppingCartItemList $itemList)
     {
         $this->itemList = $itemList;
     }
 
     public function addItem(Product $product, int $quantity): void
     {
-        $this->itemList->add($product, $quantity);
+        $this->itemList->add(
+            new ShoppingCartItem($product, $quantity)
+        );
     }
 }
