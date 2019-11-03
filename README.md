@@ -44,5 +44,6 @@ Object-based shopping cart mechanism (model) based on tests (TDD). It contains e
 6. Placing an order
     - MVP: payment on delivery and personal pickup, therefore only the shopping cart is sufficient to place an order
     - the accepted order should trigger cleanup the shopping cart - success
+    - if the shopping cart is empty, it will not be possible to accept the order - failure
     - if any of the products is no longer available, it will not be possible to accept the order - failure
     - if the quantity of any product exceeds the quantity available in the warehouse, it will not be possible to accept the order - failure
