@@ -6,5 +6,7 @@ namespace ShoppingCart\Domain\Model;
 
 interface ItemList
 {
-    public function add(Product $product, int $quantity): void;
+    public function add(Item $item): void;
+
+    public function getList(): array;
 }
