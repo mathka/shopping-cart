@@ -71,6 +71,37 @@ class AddItemServiceImplTest extends TestCase
         $this->assertEquals($quantity, $items[0]->getQuantity());
     }
 
+    public function testAllAddedProductsAreAvailableInShoppingCart()
+    {
+        // Given
+        $quantity1 = 2;
+        $product1 = $this->createMock(Product::class);
+        $product1->method('hasLargerMinimumOrderQuantity')->willReturn(false);
+
+        $quantity2 = 3;
+        $product2 = $this->createMock(Product::class);
+        $product2->method('hasLargerMinimumOrderQuantity')->willReturn(false);
+
+        $this->warehouseRepository->expects($this->any())->method('hasNotEnough')->willReturn(false);
+
+        //When
+        $this->service->add($product1, $quantity1);
+        $this->service->add($product2, $quantity2);
+
+        //Then
+        $itemList = $this->shoppingCart->getItemList();
+        //TODO - I don't like the name $itemList->getList()...
+        $items = $itemList->getList();
+
+        $this->assertCount(2, $items);
+        $this->assertInstanceOf(Item::class, $items[0]);
+        $this->assertEquals($product1, $items[0]->getProduct());
+        $this->assertEquals($quantity1, $items[0]->getQuantity());
+        $this->assertInstanceOf(Item::class, $items[1]);
+        $this->assertEquals($product2, $items[1]->getProduct());
+        $this->assertEquals($quantity2, $items[1]->getQuantity());
+    }
+
     public function testDoesNotAddItemWhenProductQuantityIsLessThanMinimumRequiredForProduct()
     {
         // Given
