@@ -9,6 +9,4 @@ interface Item
     public function getProduct(): Product;
 
     public function getQuantity(): int;
-
-//    public function getId(): int;
 }

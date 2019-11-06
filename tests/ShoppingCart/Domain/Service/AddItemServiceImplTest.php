@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace tests\ShoppingCart\Domain\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ShoppingCart\Domain\Exception\ShoppingCartException;
 use ShoppingCart\Domain\Model\Item;
 use ShoppingCart\Domain\Model\Product;
+use ShoppingCart\Domain\Model\ShoppingCart;
 use ShoppingCart\Domain\Model\ShoppingCartImpl;
 use ShoppingCart\Domain\Model\ShoppingCartItemList;
 use ShoppingCart\Domain\Repository\ShoppingCartRepository;
@@ -19,6 +21,8 @@ use ShoppingCart\Domain\Service\ShoppingCart\AddItemServiceImpl;
  */
 class AddItemServiceImplTest extends TestCase
 {
+    private const QUANTITY = 2;
+
     /**
      * @var AddItemServiceImpl
      */
@@ -36,11 +40,8 @@ class AddItemServiceImplTest extends TestCase
     public function setUp()
     {
         //TODO - to clean up (private functions with meaningful names)
-        $this->shoppingCart = new ShoppingCartImpl(
-            new ShoppingCartItemList()
-        );
-        $shoppingCartRepository = $this->createMock(ShoppingCartRepository::class);
-        $shoppingCartRepository->method('getShoppingCart')->willReturn($this->shoppingCart);
+        $this->shoppingCart = $this->createShoppingCart();
+        $shoppingCartRepository = $this->createShoppingCartRepository($this->shoppingCart);
         $this->warehouseRepository = $this->createMock(WarehouseRepository::class);
 
         $this->service = new AddItemServiceImpl($shoppingCartRepository, $this->warehouseRepository);
@@ -51,9 +52,9 @@ class AddItemServiceImplTest extends TestCase
         // Given
         $quantity = 2;
         $product = $this->createMock(Product::class);
-        $product->method('hasLargerMinimumOrderQuantity')->willReturn(false);
+        $product->method('lessThanMinimumOrderQuantity')->willReturn(false);
         $this->warehouseRepository->expects($this->once())
-            ->method('hasNotEnough')
+            ->method('isNotEnough')
             ->with($product, $quantity)
             ->willReturn(false);
 
@@ -76,13 +77,13 @@ class AddItemServiceImplTest extends TestCase
         // Given
         $quantity1 = 2;
         $product1 = $this->createMock(Product::class);
-        $product1->method('hasLargerMinimumOrderQuantity')->willReturn(false);
+        $product1->method('lessThanMinimumOrderQuantity')->willReturn(false);
 
         $quantity2 = 3;
         $product2 = $this->createMock(Product::class);
-        $product2->method('hasLargerMinimumOrderQuantity')->willReturn(false);
+        $product2->method('lessThanMinimumOrderQuantity')->willReturn(false);
 
-        $this->warehouseRepository->expects($this->any())->method('hasNotEnough')->willReturn(false);
+        $this->warehouseRepository->expects($this->any())->method('isNotEnough')->willReturn(false);
 
         //When
         $this->service->add($product1, $quantity1);
@@ -105,36 +106,60 @@ class AddItemServiceImplTest extends TestCase
     public function testDoesNotAddItemWhenProductQuantityIsLessThanMinimumRequiredForProduct()
     {
         // Given
-        $quantity = 2;
-        $product = $this->createMock(Product::class);
-        $product->method('hasLargerMinimumOrderQuantity')->willReturn(true);
+        $product = $this->createProductMock(true);
 
         //Then
         $this->expectException(ShoppingCartException::class);
-        //TODO - inconsistent function name and message of exception?
         $this->expectExceptionMessage(ShoppingCartException::lessThanMinimumOrderQuantity()->getMessage());
 
         //When
-        $this->service->add($product, $quantity);
+        $this->service->add($product, self::QUANTITY);
     }
 
     public function testDoesNotAddItemWhenProductQuantityIsNotAvailableInWarehouse()
     {
         // Given
-        $quantity = 2;
-        $product = $this->createMock(Product::class);
-        $product->method('hasLargerMinimumOrderQuantity')->willReturn(false);
+        $product = $this->createProductMock(false);
         $this->warehouseRepository->expects($this->once())
-            ->method('hasNotEnough')
-            ->with($product, $quantity)
+            ->method('isNotEnough')
+            ->with($product, self::QUANTITY)
             ->willReturn(true);
 
         //Then
         $this->expectException(ShoppingCartException::class);
-        //TODO - inconsistent function name and message of exception?
         $this->expectExceptionMessage(ShoppingCartException::largerThanAvailableInWarehouse()->getMessage());
 
         //When
-        $this->service->add($product, $quantity);
+        $this->service->add($product, self::QUANTITY);
+    }
+
+    private function createShoppingCart(): ShoppingCart
+    {
+        return new ShoppingCartImpl(
+            new ShoppingCartItemList()
+        );
+    }
+
+    private function createShoppingCartRepository(ShoppingCart $shoppingCart): ShoppingCartRepository
+    {
+        $shoppingCartRepository = $this->createMock(ShoppingCartRepository::class);
+        $shoppingCartRepository->method('getShoppingCart')->willReturn($shoppingCart);
+
+        return $shoppingCartRepository;
+    }
+
+    /**
+     * @param bool $lessThanMinimumOrderQuantity
+     *
+     * @return MockObject|Product
+     *
+     * @throws \ReflectionException
+     */
+    private function createProductMock($lessThanMinimumOrderQuantity = false): MockObject
+    {
+        $product = $this->createMock(Product::class);
+        $product->method('lessThanMinimumOrderQuantity')->willReturn($lessThanMinimumOrderQuantity);
+
+        return $product;
     }
 }

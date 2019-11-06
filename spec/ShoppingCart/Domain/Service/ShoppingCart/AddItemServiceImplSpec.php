@@ -27,8 +27,8 @@ class AddItemServiceImplSpec extends ObjectBehavior
         Product $product
     ) {
         //Given
-        $product->hasLargerMinimumOrderQuantity(self::QUANTITY)->willReturn(false);
-        $warehouseRepository->hasNotEnough($product, self::QUANTITY)->willReturn(false);
+        $product->lessThanMinimumOrderQuantity(self::QUANTITY)->willReturn(false);
+        $warehouseRepository->isNotEnough($product, self::QUANTITY)->willReturn(false);
 
         $shoppingCartRepository->getShoppingCart()->willReturn($shoppingCart);
 
@@ -45,7 +45,7 @@ class AddItemServiceImplSpec extends ObjectBehavior
         Product $product
     ) {
         //Given
-        $product->hasLargerMinimumOrderQuantity(self::QUANTITY)->willReturn(true);
+        $product->lessThanMinimumOrderQuantity(self::QUANTITY)->willReturn(true);
 
         $shoppingCartRepository->getShoppingCart()->willReturn($shoppingCart);
 
@@ -61,8 +61,8 @@ class AddItemServiceImplSpec extends ObjectBehavior
         Product $product
     ) {
         //Given
-        $product->hasLargerMinimumOrderQuantity(self::QUANTITY)->willReturn(false);
-        $warehouseRepository->hasNotEnough($product, self::QUANTITY)->willReturn(true);
+        $product->lessThanMinimumOrderQuantity(self::QUANTITY)->willReturn(false);
+        $warehouseRepository->isNotEnough($product, self::QUANTITY)->willReturn(true);
 
         // Then
         $this->shouldThrow(ShoppingCartException::largerThanAvailableInWarehouse())

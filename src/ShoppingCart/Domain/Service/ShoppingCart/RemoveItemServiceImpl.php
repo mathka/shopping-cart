@@ -22,6 +22,6 @@ class RemoveItemServiceImpl implements RemoveItemService
     public function remove(Item $item): void
     {
         $shoppingCart = $this->shoppingCartRepository->getShoppingCart();
-        $shoppingCart->removeItem($item);
+        $shoppingCart->removeItem($item); //TODO remove position or product?
     }
 }

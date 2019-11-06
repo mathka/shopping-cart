@@ -18,7 +18,6 @@ Object-based shopping cart mechanism (model) based on tests (TDD). It contains e
     - the minimum required quantity of items for a given product has been added - success
     - more than the minimum required quantity of items for a given product has been added - success
     - less than the minimum required quantity of items for a given product has been added - failure
-    - the quantity is negative - failure
     - a larger quantity than was available in the warehouse has been added - failure
 
 2. Removing the product from the shopping cart
@@ -28,7 +27,7 @@ Object-based shopping cart mechanism (model) based on tests (TDD). It contains e
 3. Increasing the quantity of a given product in the shopping cart
     - quantity was available in the warehouse - success
     - expected quantity was not available - failure
-    - the quantity is negative - failure
+    - the quantity is grea - failure
 
 4. Reducing the quantity of the product in the shopping cart
     - it was possible to reduce it to the given quantity - success

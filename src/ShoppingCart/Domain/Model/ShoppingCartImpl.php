@@ -7,11 +7,13 @@ namespace ShoppingCart\Domain\Model;
 class ShoppingCartImpl implements ShoppingCart
 {
     /**
-     * @var ShoppingCartItemList
+     * @var ItemList
      */
     private $itemList;
 
-    public function __construct(ShoppingCartItemList $itemList)
+    //TODO TotalPrice?
+
+    public function __construct(ItemList $itemList)
     {
         $this->itemList = $itemList;
     }
@@ -25,7 +27,7 @@ class ShoppingCartImpl implements ShoppingCart
 
     public function removeItem(Item $item): void
     {
-//        $this->itemList - remove($item);
+//        $this->itemList->remove($item);
     }
 
     public function getItemList(): ItemList

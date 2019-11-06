@@ -31,11 +31,11 @@ class AddItemServiceImpl implements AddItemService
 
     public function add(Product $product, int $quantity): void
     {
-        if ($product->hasLargerMinimumOrderQuantity($quantity)) {
+        if ($product->lessThanMinimumOrderQuantity($quantity)) {
             throw ShoppingCartException::lessThanMinimumOrderQuantity();
         }
 
-        if ($this->warehouseRepository->hasNotEnough($product, $quantity)) {
+        if ($this->warehouseRepository->isNotEnough($product, $quantity)) {
             throw ShoppingCartException::largerThanAvailableInWarehouse();
         }
 
