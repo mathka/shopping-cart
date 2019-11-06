@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ShoppingCart\Domain\Service\ShoppingCart;
 
-use ShoppingCart\Domain\Model\Product;
+use ShoppingCart\Domain\Model\Item;
 use ShoppingCart\Domain\Repository\ShoppingCartRepository;
 
 class RemoveItemServiceImpl implements RemoveItemService
@@ -19,9 +19,9 @@ class RemoveItemServiceImpl implements RemoveItemService
         $this->shoppingCartRepository = $shoppingCartRepository;
     }
 
-    public function remove(Product $product): void
+    public function remove(Item $item): void
     {
         $shoppingCart = $this->shoppingCartRepository->getShoppingCart();
-        $shoppingCart->removeItem($product);
+        $shoppingCart->removeItem($item);
     }
 }

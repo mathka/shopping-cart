@@ -8,5 +8,7 @@ interface ItemList
 {
     public function add(Item $item): void;
 
+    public function remove(Item $item): void;
+
     public function getList(): array;
 }

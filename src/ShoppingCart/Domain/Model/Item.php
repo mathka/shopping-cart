@@ -6,4 +6,5 @@ namespace ShoppingCart\Domain\Model;
 
 interface Item
 {
+//    public function getId(): int;
 }

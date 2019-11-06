@@ -18,4 +18,16 @@ class ShoppingCartItemListSpec extends ObjectBehavior
             $item,
         ]);
     }
+
+    public function it_increa_item_to_list(ShoppingCartItem $item)
+    {
+        //When
+        $this->add($item);
+
+        //Then
+        $result = $this->getList();
+        $result->shouldBe([
+            $item,
+        ]);
+    }
 }
