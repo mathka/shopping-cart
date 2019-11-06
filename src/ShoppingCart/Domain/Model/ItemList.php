@@ -10,5 +10,8 @@ interface ItemList
 
     public function remove(Item $item): void;
 
+    /**
+     * @return Item[]
+     */
     public function getList(): array;
 }

@@ -25,7 +25,7 @@ class ShoppingCartImpl implements ShoppingCart
 
     public function removeItem(Item $item): void
     {
-        $this->itemList-remove($item);
+//        $this->itemList - remove($item);
     }
 
     public function getItemList(): ItemList
