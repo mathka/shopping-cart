@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace ShoppingCart\Domain\Model;
 
-interface Product
+abstract class Product
 {
-    public function hasLargerMinimumOrderQuantity(int $quantity): bool;
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var Money
+     */
+    private $price;
+
+    abstract public function lessThanMinimumOrderQuantity(int $quantity): bool;
 }

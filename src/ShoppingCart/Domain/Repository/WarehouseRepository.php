@@ -8,5 +8,5 @@ use ShoppingCart\Domain\Model\Product;
 
 interface WarehouseRepository
 {
-    public function hasNotEnough(Product $product, int $quantity): bool;
+    public function isNotEnough(Product $product, int $quantity): bool;
 }
