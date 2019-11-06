@@ -29,4 +29,20 @@ class ShoppingCartImplSpec extends ObjectBehavior
         $item = new ShoppingCartItem($wrappedProduct, $quantity);
         $itemList->add($item)->shouldHaveBeenCalled();
     }
+
+    public function it_removes_product_from_list(
+        Product $product,
+        ShoppingCartItemList $itemList,
+        ShoppingCartItem $item
+    ) {
+        //Given
+        $wrappedProduct = $product->getWrappedObject();
+        $itemList->findByProduct($product)->willReturn($item);
+
+        //When
+        $this->removeItem($product);
+
+        //Then
+        $itemList->remove($item)->shouldHaveBeenCalled();
+    }
 }

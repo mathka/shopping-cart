@@ -23,8 +23,13 @@ class ShoppingCartImpl implements ShoppingCart
         );
     }
 
-    public function removeItem(Product $product): void
+    public function removeItem(Item $item): void
     {
-        // TODO: Implement removeItem() method.
+        $this->itemList-remove($item);
+    }
+
+    public function getItemList(): ItemList
+    {
+        return $this->itemList;
     }
 }

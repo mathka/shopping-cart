@@ -7,6 +7,11 @@ namespace ShoppingCart\Domain\Model;
 class ShoppingCartItem implements Item
 {
     /**
+     * @var int
+     */
+    private $id;
+
+    /**
      * @var Product
      */
     private $product;
@@ -21,4 +26,10 @@ class ShoppingCartItem implements Item
         $this->product = $product;
         $this->quantity = $quantity;
     }
+
+//    //Test it
+//    public function getId(): int
+//    {
+//        return $this->id;
+//    }
 }
